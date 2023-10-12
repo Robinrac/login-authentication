@@ -26,4 +26,29 @@ router.get('/', (req, res) => {
   }
 });
 
+//skelett för post request
+router.post('/', (req, res) => {
+  
+  try {
+
+  } catch {
+    res.status(401).send("Fel") //Måste lägga till felmeddelande här men vet ej vad för tillfället
+  }
+
+  res.json({ message: 'New user successfully created' });
+});
+
+//skelett för delete request
+router.delete('/', (req, res) => {
+  
+  try {
+
+  } catch {
+    res.status(401).send("Fel") //Måste lägga till felmeddelande här men vet ej vad för tillfället
+  }
+
+  res.json({ message: 'User successfully deleted' });
+});
+
+
 module.exports = router;
