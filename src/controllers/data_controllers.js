@@ -21,9 +21,9 @@ const getSpecificUser = async (req, res) => {
         const verified = jwt.verify(token, process.env.JWTSecret);
 
         if (verified == true) {
-        res.json({ data: 'Secret data for user!' });
+            res.json({ data: 'Secret data for user!' });
         } else {
-        res.json({ message: "Not verified" });
+            res.json({ message: "Not authorized to delete said user" }); //Vet ej om detta är korrekt error message
         }
         
     } catch {
@@ -42,10 +42,25 @@ const postUser = async (req, res) => {
 
 //================DELETE USER================\\
 const deleteUser = async (req, res) => {
-    try{
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split (" ")[1];
 
-    } catch (error) {
-        console.log({ message: error });
+    if (!token) return res.status(401).send("Access Denied");
+
+    try{
+        const verified = jwt.verify(token, process.env.JWTSecret);
+
+        if (verified == true) {
+
+            
+
+            res.json({ message : "User deleted successfully"});
+        } else {
+            res.json({ message: "Not authorized to delete said user"}) //Vet ej om detta är korrekt error message
+        }
+
+    } catch {
+        res.status(401).send('Invalid Token');
     }
 }
 
