@@ -1,5 +1,12 @@
 const user = require("../model/userModel");
 const jwt = require('jsonwebtoken');
+const { validationResult, check } = require('express-validator');
+
+const postUserValidationRules = [
+    check('emailAddress').isEmail().withMessage('Invalid email address'),
+    check('password').isLength({ min: 5, max: 20 }).withMessage('Password must be 5-20 characters long'),
+  ];
+
 
 //============GET USERS FOR TEST============\\
 const getUsers = async (req, res) => {
@@ -41,24 +48,36 @@ const getSpecificUser = async (req, res) => {
 //=================POST USER=================\\
 const postUser = async (req, res) => {
 
-    console.log ("CREATE USER FUNCTION TRIGGERED")
-    console.log ("request body: ", req.body)
+    try {
+        await Promise.all(postUserValidationRules.map((validation) => validation.run(req)));
 
-try {
-    const newUser = new user({
-        emailAddress: req.body.emailAddress,
-        password: req.body.password,
-        image: req.body.image,
-    });
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
 
-    const savedUser = await newUser.save();
+        console.log ("CREATE USER FUNCTION TRIGGERED")
+        console.log ("request body: ", req.body)
 
-    res.status(201).json(savedUser);
+        try {
 
-} catch (error) {
+            const newUser = new user({
+                emailAddress: req.body.emailAddress,
+                password: req.body.password,
+                image: req.body.image,
+            });
 
-    res.status(500).json({ message: 'Error creating user', error: error.message });
-}
+            const savedUser = await newUser.save();
+
+            res.status(201).json(savedUser);
+
+        } catch (error) {
+
+            res.status(500).json({ message: 'Error creating user', error: error.message });
+        }
+    } catch (error) {
+        res.status(500).json({message: 'Error creating user', error: error.message })
+    }
 }
 
 //================DELETE USER================\\
