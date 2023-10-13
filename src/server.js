@@ -4,10 +4,12 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
+const helmet = require("helmet");
 
 const dataRoutes = require('./routes/data_routes');
 
 const app = express();
+app.use(helmet())
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/data', dataRoutes);
