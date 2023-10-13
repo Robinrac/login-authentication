@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 //============GET USERS FOR TEST============\\
 const getUsers = async (req, res) => {
 
-    console.log("GET USER FUNCTION TRIGGERED")
+    console.log("GET ALL USERS FUNCTION TRIGGERED")
 
     try {
         res.json(await user.find());
@@ -21,10 +21,14 @@ const getSpecificUser = async (req, res) => {
     if (!token) return res.status(401).send('Access Denied');
 
     try {
+
+        console.log("GET SPECIFIC USER FUNCTION TRIGGERED")
         const verified = jwt.verify(token, process.env.JWTSecret);
 
         if (verified) {
-            res.json({ data: 'Secret data for user!' });
+            console.log("successfully verified!")
+            console.log("Verified User:", verified);
+            res.json(await user.findOne({ id: req.params._id }));
         } else {
             res.json({ message: "Expired session token" });
         }
@@ -69,18 +73,16 @@ const deleteUser = async (req, res) => {
         const verified = jwt.verify(token, process.env.JWTSecret);
 
         if (verified) {
-            console.log("successfully verified")
+            console.log("successfully verified!")
             console.log("Verified User:", verified);
             res.json(await user.deleteOne({id: req.params._id}));
             
         } else{
-           console.log("Not verified")
             res.json({ message: "Expired session token"})
         }
 
     } catch {
         res.status(401).send("Invalid Token");
-        console.log("wrong")
     }
 }
 
