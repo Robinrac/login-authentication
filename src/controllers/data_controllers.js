@@ -3,6 +3,9 @@ const jwt = require('jsonwebtoken');
 
 //============GET USERS FOR TEST============\\
 const getUsers = async (req, res) => {
+
+    console.log("get users function triggered")
+
     try {
         res.json(await user.find());
     } catch {
@@ -33,11 +36,25 @@ const getSpecificUser = async (req, res) => {
 
 //=================POST USER=================\\
 const postUser = async (req, res) => {
-    try{
 
-    } catch (error) {
-        console.log({ message: error });
-    }
+    console.log ("create user function triggered")
+    console.log ("request body: ", req.body)
+
+try {
+    const newUser = new user({
+        emailAddress: req.body.emailAddress,
+        password: req.body.password,
+        image: req.body.image,
+    });
+
+    const savedUser = await newUser.save();
+
+    res.status(201).json(savedUser);
+
+} catch (error) {
+
+    res.status(500).json({ message: 'Error creating user', error: error.message });
+}
 }
 
 //================DELETE USER================\\
@@ -52,7 +69,7 @@ const deleteUser = async (req, res) => {
 
         if (verified == true) {
 
-            
+
 
             res.json({ message : "User deleted successfully"});
         } else {
