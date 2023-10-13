@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 //============GET USERS FOR TEST============\\
 const getUsers = async (req, res) => {
 
-    console.log("get users function triggered")
+    console.log("GET USER FUNCTION TRIGGERED")
 
     try {
         res.json(await user.find());
@@ -26,7 +26,7 @@ const getSpecificUser = async (req, res) => {
         if (verified == true) {
             res.json({ data: 'Secret data for user!' });
         } else {
-            res.json({ message: "Not authorized to delete said user" }); //Vet ej om detta är korrekt error message
+            res.json({ message: "Not authorized to delete said user" });
         }
         
     } catch {
@@ -37,7 +37,7 @@ const getSpecificUser = async (req, res) => {
 //=================POST USER=================\\
 const postUser = async (req, res) => {
 
-    console.log ("create user function triggered")
+    console.log ("CREATE USER FUNCTION TRIGGERED")
     console.log ("request body: ", req.body)
 
 try {
@@ -65,19 +65,19 @@ const deleteUser = async (req, res) => {
     if (!token) return res.status(401).send("Access Denied");
 
     try{
+        console.log ("DELETE USER FUNCTION TRIGGERED")
         const verified = jwt.verify(token, process.env.JWTSecret);
 
-        if (verified == true) {
-
-
-
-            res.json({ message : "User deleted successfully"});
+        if (verified) {
+            console.log("successfully verified")
+            res.json(await user.deleteOne({id: req.params._id}));
+            
         } else {
-            res.json({ message: "Not authorized to delete said user"}) //Vet ej om detta är korrekt error message
+            res.json({ message: "Not authorized to delete said user"})
         }
 
     } catch {
-        res.status(401).send('Invalid Token');
+        res.status(401).send("Invalid Token");
     }
 }
 
