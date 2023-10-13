@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
 const helmet = require("helmet");
 
-const dataRoutes = require('./routes/data_routes');
+const dataRoutes = require('./routes/userRoutes');
 
 const app = express();
 app.use(helmet())
