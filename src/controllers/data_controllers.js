@@ -23,10 +23,10 @@ const getSpecificUser = async (req, res) => {
     try {
         const verified = jwt.verify(token, process.env.JWTSecret);
 
-        if (verified == true) {
+        if (verified) {
             res.json({ data: 'Secret data for user!' });
         } else {
-            res.json({ message: "Not authorized to delete said user" });
+            res.json({ message: "Expired session token" });
         }
         
     } catch {
@@ -70,14 +70,17 @@ const deleteUser = async (req, res) => {
 
         if (verified) {
             console.log("successfully verified")
+            console.log("Verified User:", verified);
             res.json(await user.deleteOne({id: req.params._id}));
             
-        } else {
-            res.json({ message: "Not authorized to delete said user"})
+        } else{
+           console.log("Not verified")
+            res.json({ message: "Expired session token"})
         }
 
     } catch {
         res.status(401).send("Invalid Token");
+        console.log("wrong")
     }
 }
 
