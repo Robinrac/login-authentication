@@ -1,8 +1,17 @@
 const user = require("../model/userModel");
 const jwt = require('jsonwebtoken');
 
-//=================GET USER=================\\
+//============GET USERS FOR TEST============\\
 const getUsers = async (req, res) => {
+    try {
+        res.json(await user.find());
+    } catch {
+        console.log({ message: error });
+    }
+}
+
+//=============GET SPECIFIC USER=============\\
+const getSpecificUser = async (req, res) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
@@ -19,15 +28,6 @@ const getUsers = async (req, res) => {
         
     } catch {
         res.status(401).send('Invalid Token');
-    }
-}
-
-//=============GET SPECIFIC USER=============\\
-const getSpecificUser = async (req, res) => {
-    try{
-
-    } catch (error) {
-        console.log({ message: error });
     }
 }
 
