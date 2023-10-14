@@ -11,6 +11,7 @@
     "test:integration": "jest --group=integration",
     "jest.runner": "groups",
     "clear-test-cache": "jest --clearCache",
+    "prepare": "husky install",
     "start": "node ./src/service.js",
     "dev": "nodemon ./src/service.js"
   },
@@ -39,6 +40,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.1.0",
+    "husky": "^8.0.3",
     "jest": "^29.7.0",
     "jest-runner-groups": "^2.2.0",
     "nodemon": "^3.0.1",
