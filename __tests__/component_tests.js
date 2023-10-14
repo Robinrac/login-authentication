@@ -4,6 +4,6 @@
 
 describe('Test jest', () => {
   it('1 = 1', () => {
-    expect(true).toBe(false);
+    expect(1).toBe(1);
   });
 });
