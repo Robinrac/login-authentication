@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const { validationResult, check } = require('express-validator');
 
 const postUserValidationRules = [
-    check('emailAddress').isEmail().withMessage('Invalid email address'),
+    check('email').isEmail().withMessage('Invalid email address'),
     check('password').isLength({ min: 5, max: 20 }).withMessage('Password must be 5-20 characters long'),
   ];
 
@@ -62,7 +62,7 @@ const postUser = async (req, res) => {
         try {
 
             const newUser = new user({
-                emailAddress: req.body.emailAddress,
+                email: req.body.email,
                 password: req.body.password,
                 image: req.body.image,
             });
